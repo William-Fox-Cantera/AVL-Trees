@@ -84,6 +84,8 @@ void BSTY::adjustHeights(NodeT *n) {
 	int leftHeight;
 	int rightHeight;
 	int balance;
+	int ancestorLeftBalance;
+	int ancestorRightBalance;
 
 	// Check n's parent to make sure it isn't NULL before trying to access it
 	if (n->parent != NULL) {
@@ -110,16 +112,36 @@ void BSTY::adjustHeights(NodeT *n) {
 		// Change the ancestors height to the max of left or right, if they heights are equal it doesn't matter which
 		leftHeight > rightHeight ? ancestor->height = leftHeight + 1 : ancestor->height = rightHeight + 1;
 
-
-		// Check balances and rotate if necessary
-		balance = findBalance(root);
-
-		if ()
-		while (balance < -1) {
-			rotateLeft(root);
-			balance = findBalance(root);
+//*****************************************************************************************************************************************
+// FIXING BALANCES
+		// Assign balance of the ancestor of the new leaf as well as the eft and right children of the ancestor
+		balance = findBalance(ancestor);
+		if (ancestor->left != NULL) { // The if statements are used to avoid segmentation faults
+			ancestorLeftBalance = findBalance(ancestor->left);
+		}
+		if (ancestor->right != NULL) {
+			ancestorRightBalance = findBalance(ancestor->right);
 		}
 
+		// CASE 1: left left rotation
+		if ((balance > 1) && (ancestorLeftBalance >= 1)) {
+			rotateRight(ancestor);
+		}
+		// CASE 2: right right rotation
+		if ((balance < -1) && (ancestorRightBalance <= -1)) {
+			rotateLeft(ancestor);
+		}
+		// CASE 3: right left rotation
+		if ((balance < -1) && (ancestorRightBalance >= 1)) {
+			rotateRight(ancestor->right);
+			rotateLeft(ancestor);
+		}
+		// CASE 4: left right rotation
+		if ((balance > 1) && (ancestorLeftBalance <= -1)) {
+			rotateLeft(ancestor->left);
+			rotateRight(ancestor);
+		}
+//******************************************************************************************************************************************
 
 		// Increment heights, get ready for next iteration
 		ancestor = ancestor->parent;
@@ -232,7 +254,7 @@ NodeT *BSTY::find(string x) {
 		// Checks if the string is already in the list, if it is break from the loop
 		if (x == temp->data) {
 			toBeReturned = temp;
-			//temp->printNode();
+			temp->printNode();
 			break;
 		}
 
@@ -276,14 +298,32 @@ NodeT *BSTY::rotateLeft(NodeT *n) {
 		n->parent = temp1;
 		temp1->left = n;
 	} else { // Normal rotation not involving the root
-		n->parent->left = temp1;
+		if (n->parent->left == n) {
+			n->parent->left = temp1;
+		} else {
+			n->parent->right = temp1;
+		}
 		temp1->parent = n->parent;
 		n->parent = temp1;
 		temp1->left = n;
 	}
 
-	// Update the heights, only temp1 and n's heights should change
-	adjustHeights(temp1->left);
+	// Update the heights
+	int leftHeight = (n->left != NULL) ? n->left->height : 0;
+	int rightHeight = (n->right != NULL) ? n->right->height : 0;
+	if (leftHeight > rightHeight) {
+		n->height = leftHeight + 1;
+	} else {
+		n->height = rightHeight + 1;
+	}
+
+	int tempLeftHeight = (temp1->left != NULL) ? temp1->left->height : 0;
+	int tempRightHeight = (temp1->right != NULL) ? temp1->right->height : 0;
+	if (tempLeftHeight > tempRightHeight) {
+		temp1->height = tempLeftHeight + 1;
+	} else {
+		temp1->height = tempRightHeight + 1;
+	}
 
 	// Return new node on top
 	return temp1;
@@ -313,14 +353,32 @@ NodeT *BSTY::rotateRight(NodeT *n) {
 		n->parent = temp1;
 		temp1->right = n;
 	} else { // Normal rotation not involving the root
-		n->parent->right = temp1;
+		if (n->parent->left == n) {
+			n->parent->left = temp1;
+		} else {
+			n->parent->right = temp1;
+		}
 		temp1->parent = n->parent;
 		n->parent = temp1;
 		temp1->right = n;
 	}
 
-	// Update heights
-	adjustHeights(temp1->right);
+	// Update the heights
+	int leftHeight = (n->left != NULL) ? n->left->height : 0;
+	int rightHeight = (n->right != NULL) ? n->right->height : 0;
+	if (leftHeight > rightHeight) {
+		n->height = leftHeight + 1;
+	} else {
+		n->height = rightHeight + 1;
+	}
+
+	int tempLeftHeight = (temp1->left != NULL) ? temp1->left->height : 0;
+	int tempRightHeight = (temp1->right != NULL) ? temp1->right->height : 0;
+	if (tempLeftHeight > tempRightHeight) {
+		temp1->height = tempLeftHeight + 1;
+	} else {
+		temp1->height = tempRightHeight + 1;
+	}
 
 	// Return new node on top
 	return temp1;

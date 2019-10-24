@@ -7,7 +7,7 @@
  *
  *  The methods made in this cpp file are meant for the SNode class for lab 4
  */
-#include "SNode.hpp"
+#include "NodeL.hpp"
 #include <stdlib.h>
 #include <iostream>
 #include <string>
@@ -18,7 +18,7 @@ using namespace std;
  * Consumes: Nothing
  * Produdces: Nothing
  */
-SNode::SNode() {
+NodeL::NodeL() {
 	string userComment = "";
 
 	cout << "Enter a comment about the book: ";
@@ -33,7 +33,7 @@ SNode::SNode() {
  * Consumes: An integer and a String
  * Produces: Nothing
  */
-SNode::SNode(string c) {
+NodeL::NodeL(string c) {
 	word = c;
 	next = NULL;
 }
@@ -43,7 +43,7 @@ SNode::SNode(string c) {
  * Consumes: Nothing
  * Produces: Nothing
  */
-SNode::~SNode() {
+NodeL::~NodeL() {
 //	if (next != NULL) {
 //	cout << "deleting may cause memory leak." << endl;
 //	}
@@ -54,6 +54,6 @@ SNode::~SNode() {
  * Consumes: Nothing
  * Produces: Nothing
  */
-void SNode::printNode() {
+void NodeL::printNode() {
 	cout << "The comments are: " << word << endl;
 }

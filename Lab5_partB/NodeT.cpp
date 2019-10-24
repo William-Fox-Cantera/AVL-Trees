@@ -20,7 +20,7 @@ NodeT::~NodeT() {
 }
 
 void NodeT::printNode() {
-	cout << "|"<<data << ", "<< height <<"|" << endl;
+	cout << "|" << data << "(" << height << ")" << ":" << endl;
 }
 
 

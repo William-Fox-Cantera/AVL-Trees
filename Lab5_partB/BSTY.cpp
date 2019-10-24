@@ -24,6 +24,7 @@ bool BSTY::insertit(string x) {
 	NodeT *newNode = new NodeT(x);
 	bool wasInserted = false;
 
+	cout << "inserting " << x << endl;
 	// Check if the root is NULL, if it is, the new node is root
 	if (root == NULL) {
 		root = newNode;
@@ -97,7 +98,6 @@ void BSTY::adjustHeights(NodeT *n) {
 	n->right != NULL ? rightHeight = n->right->height : rightHeight = 0;
 	leftHeight > rightHeight ? n->height = leftHeight + 1 : n->height = rightHeight + 1;
 
-
 	// Loop all the way up to root if necessary
 	while (needsToChange && ancestor != NULL) {
 		// If ancestors left/right is not null, set their heights, if they are NULL height is 0
@@ -125,19 +125,25 @@ void BSTY::adjustHeights(NodeT *n) {
 
 		// CASE 1: left left rotation
 		if ((balance > 1) && (ancestorLeftBalance >= 1)) {
+			cout << ancestor->data << " must rotate right " << "(" << balance << ")" << endl;
 			rotateRight(ancestor);
 		}
 		// CASE 2: right right rotation
 		if ((balance < -1) && (ancestorRightBalance <= -1)) {
+			cout << ancestor->data << " must rotate left " << "(" << balance << ")" << endl;
 			rotateLeft(ancestor);
 		}
-		// CASE 3: right left rotation
+		// CASE 3: left right rotation
 		if ((balance < -1) && (ancestorRightBalance >= 1)) {
+			cout << ancestor->data << " must rotate left " << "(" << balance << ")" << endl;
+			cout << ancestor->right->data << " child, rotating right" << endl;
 			rotateRight(ancestor->right);
 			rotateLeft(ancestor);
 		}
-		// CASE 4: left right rotation
+		// CASE 4: right left rotation
 		if ((balance > 1) && (ancestorLeftBalance <= -1)) {
+			cout << ancestor->data << " must rotate right " << "(" << balance << ")" << endl;
+			cout << ancestor->left->data << " child, rotating left" << endl;
 			rotateLeft(ancestor->left);
 			rotateRight(ancestor);
 		}
@@ -243,6 +249,8 @@ void BSTY::myPrint(NodeT *n) {
 // NOTE: If the node can't be found, this method prints out that x can't be found.
 // if it is found, the printNode method is called for the node.  
 NodeT *BSTY::find(string x) {
+	int numberOfSteps = 1;
+
 	// See if the tree is empty
 	if (root == NULL) {
 		cout << "The tree is empty, nothing to find" << endl;
@@ -254,6 +262,7 @@ NodeT *BSTY::find(string x) {
 		// Checks if the string is already in the list, if it is break from the loop
 		if (x == temp->data) {
 			toBeReturned = temp;
+			cout << numberOfSteps << ":";
 			temp->printNode();
 			break;
 		}
@@ -268,6 +277,7 @@ NodeT *BSTY::find(string x) {
 		if (temp == NULL) {
 			cout << x << " not found" << endl;
 		}
+		numberOfSteps++;
 	}
 
 	// Returns the node if it was found to be in the list, otherwise NULL

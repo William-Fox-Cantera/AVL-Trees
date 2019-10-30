@@ -112,8 +112,7 @@ void BSTY::adjustHeights(NodeT *n) {
 		// Change the ancestors height to the max of left or right, if they heights are equal it doesn't matter which
 		leftHeight > rightHeight ? ancestor->height = leftHeight + 1 : ancestor->height = rightHeight + 1;
 
-//*****************************************************************************************************************************************
-// FIXING BALANCES
+		// FIXING BALANCES
 		// Assign balance of the ancestor of the new leaf as well as the eft and right children of the ancestor
 		balance = findBalance(ancestor);
 		if (ancestor->left != NULL) { // The if statements are used to avoid segmentation faults
@@ -147,7 +146,6 @@ void BSTY::adjustHeights(NodeT *n) {
 			rotateLeft(ancestor->left);
 			rotateRight(ancestor);
 		}
-//******************************************************************************************************************************************
 
 		// Increment heights, get ready for next iteration
 		ancestor = ancestor->parent;
@@ -173,7 +171,7 @@ void BSTY::printTreeIO(NodeT *n) {
 		return;
 	}
 	printTreeIO(n->left);
-	cout << "|" << n->data << ", " << n->height << "|\n";
+	cout << "|" << n->data << ", " << "(" << n->height << "):\n";
 	printTreeIO(n->right);
 }
 
@@ -193,7 +191,7 @@ void BSTY::printTreePre(NodeT *n) {
 	if (n == NULL) {
 		return;
 	}
-	cout << "|" << n->data << ", " << n->height << "|\n";
+	cout << "|" << n->data << ", " << "(" << n->height << "):\n";
 	printTreePre(n->left);
 	printTreePre(n->right);
 }
@@ -217,7 +215,7 @@ void BSTY::printTreePost(NodeT *n) {
 		}
 	printTreePost(n->left);
 	printTreePost(n->right);
-	cout << "|" << n->data << ", " << n->height << "|\n";
+	cout << "|" << n->data << ", " << "(" << n->height << "):\n";
 }
 void BSTY::myPrint() {
 	if (root == NULL ) {

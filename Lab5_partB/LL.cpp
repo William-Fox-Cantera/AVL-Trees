@@ -84,7 +84,7 @@ void LL::push(string s) {
 }
 
 /*
- * getScore, traverses the linked list and adds up the score of each word
+ * getScore, traverses the linked list and adds up the score of each word, sets the score attribute at the end
  * Consumes: Nothing
  * Produces: Nothing
  */

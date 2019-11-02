@@ -113,7 +113,7 @@ void BSTY::adjustHeights(NodeT *n) {
 		leftHeight > rightHeight ? ancestor->height = leftHeight + 1 : ancestor->height = rightHeight + 1;
 
 		// FIXING BALANCES
-		// Assign balance of the ancestor of the new leaf as well as the eft and right children of the ancestor
+		// Assign balance of the ancestor of the new leaf as well as the left and right children of the ancestor
 		balance = findBalance(ancestor);
 		if (ancestor->left != NULL) { // The if statements are used to avoid segmentation faults
 			ancestorLeftBalance = findBalance(ancestor->left);
